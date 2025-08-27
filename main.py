@@ -1,4 +1,6 @@
 from fastapi import FastAPI
+from typing import Optional
+from pydantic import BaseModel
 
 app = FastAPI()
 
@@ -14,13 +16,12 @@ def about():
 
 
 @app.get('/blog/{id}')
-def blog(id : int):
+def blog(id: int):
     return {'data': id}
 
 
 @app.get('/blog')
-def blog(limit, published : bool):
-    
+def blog(limit, published: bool):
     if published:
         return {'data': f'{limit} published fetched from the db'}
     else:
@@ -30,5 +31,18 @@ def blog(limit, published : bool):
 @app.get('/blog/{id}/comments')
 def comments(id):
     return {'data': {'1', '2'}}
+
+########### Request Body Using Post ###########
+
+
+class Blog(BaseModel):
+    title: str
+    body: str
+    published: Optional[bool]
+
+
+@app.post('/blog')
+def create_blog(request: Blog):
+    return {'data': f'Blog is created by {request.title}'}
 
 
