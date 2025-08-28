@@ -46,3 +46,7 @@ def create_blog(request: Blog):
     return {'data': f'Blog is created by {request.title}'}
 
 
+import uvicorn
+
+if __name__ == '__main__':
+    uvicorn.run(app, host='localhost', port=8000)
